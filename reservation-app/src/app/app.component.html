@@ -38,26 +38,67 @@
         </div>
       </div>
       <h1>Available rooms</h1>
-    <div class="row" *ngIf="rooms">
-      <div class="col-12">
-        <div class="table-responsive">
-          <table class="table" id="roomsTable">
-            <tbody>
-            <tr *ngFor="let room of rooms">
-              <td>
-                <img src="/assets/images/intro_room.jpg" alt="room image">
-              </td>
-              <td>
-                <strong>Room number:  #{{room.roomNumber}}</strong><br>
-                <strong>Price:  #{{ room.price}}</strong>
-              </td>
-            </tr>
-            </tbody>
-          </table>
+      <div class="row" *ngIf="rooms">
+        <div class="col-12">
+          <div class="table-responsive">
+            <table class="table" id="roomsTable">
+              <tbody>
+              <tr *ngFor="let room of rooms">
+                <td>
+                  <img src="/assets/images/intro_room.jpg" alt="room image">
+                </td>
+                <td>
+                  <strong>Room number: #{{room.roomNumber}}</strong><br>
+                  <strong>Price: #{{ room.price}}</strong>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
+      <div class="row" *ngIf="reservations">
+        <h1>Reservations</h1>
+        <ul *ngFor="let res of reservations">
+          <li>Room number : {{res.roomNumber}}</li>
+          <li>Price : {{res.price}}</li>
+          <li>CheckIn: {{res.checkIn | date : "fullDate"}}</li>
+          <li>CheckIn: {{res.checkOut | date : "fullDate"}}</li>
+          <hr>
+        </ul>
+      </div>
+      <hr>
+      <form class="form-horizontal" [formGroup]="roomSearchControl" (ngSubmit)="createReservation()">
+        <div class="form-group">
+          <label for="checkin" class="col-4">CheckIn : </label>
+          <div class="col-8">
+            <input id="checkin" type="date" class="form-control" formControlName="checkIn">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="checkout" class="col-4">CheckOut : </label>
+          <div class="col-8">
+            <input id="checkout" type="date" class="form-control" formControlName="checkOut">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="roomNumer" class="col-4">Room : </label>
+          <div class="col-8">
+            <select id="roomNumer" formControlName="roomNumber">
+              <option *ngFor="let room of rooms" [value]="room.roomNumber + '|' + room.price">
+                {{room.roomNumber}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-offset-12 col-10">
+            <button class="btn btn-primary btn-large" type="submit" [formGroup]="roomSearchControl">Reserve</button>
+          </div>
+        </div>
+      </form>
     </article>
+    <hr>
   </div><!-- welcome -->
   <div class="scene" id="hotelinfo">
     <article class="heading">
